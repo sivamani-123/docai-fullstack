@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DocAI - ask your documents</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<section id="auth" class="auth" hidden>
+  <div class="auth-card">
+    <h1>DocAI</h1>
+    <p class="muted">Upload your documents and ask questions. Answers cite the passages they come from.</p>
+    <label>Email <input id="email" type="email" autocomplete="username" required></label>
+    <label>Password <input id="password" type="password" autocomplete="current-password" minlength="8" required></label>
+    <div class="row">
+      <button id="btn-login" class="primary">Log in</button>
+      <button id="btn-register">Create account</button>
+    </div>
+    <p id="auth-msg" class="msg" role="alert"></p>
+  </div>
+</section>
+
+<div id="app" class="app" hidden>
+  <header>
+    <strong>DocAI</strong>
+    <nav>
+      <button class="tab active" data-tab="chat">Chat</button>
+      <button class="tab" data-tab="tools">Tools</button>
+    </nav>
+    <span class="spacer"></span>
+    <span id="who" class="muted"></span>
+    <button id="btn-logout">Log out</button>
+  </header>
+
+  <div class="layout">
+    <aside>
+      <button id="btn-new" class="primary wide">New chat</button>
+      <h2>Chats</h2>
+      <ul id="sessions" class="list"></ul>
+
+      <h2>Documents</h2>
+      <label class="upload">
+        <input type="file" id="file" accept=".pdf,.txt,.md">
+        Upload a PDF, TXT or MD file
+      </label>
+      <p id="upload-msg" class="msg" role="status"></p>
+      <ul id="docs" class="list"></ul>
+    </aside>
+
+    <main>
+      <section id="tab-chat">
+        <div id="log" class="log"><p class="empty">Upload a document, then ask a question about it.</p></div>
+        <div class="composer">
+          <div class="row">
+            <select id="mode" aria-label="Answer mode">
+              <option value="RAG">Ask my documents</option>
+              <option value="LLM">Chat with the model only</option>
+            </select>
+            <select id="scope" aria-label="Search scope"></select>
+          </div>
+          <div class="row">
+            <textarea id="question" rows="2" placeholder="Ask a question" maxlength="2000"></textarea>
+            <button id="btn-ask" class="primary">Ask</button>
+          </div>
+          <p id="chat-msg" class="msg" role="alert"></p>
+        </div>
+      </section>
+
+      <section id="tab-tools" hidden>
+        <div class="tool">
+          <h2>Semantic search</h2>
+          <p class="muted">Finds passages by meaning, not just matching words. No language model needed.</p>
+          <div class="row">
+            <input id="search-q" placeholder="Describe what you are looking for">
+            <select id="search-scope" aria-label="Search scope"></select>
+            <button id="btn-search" class="primary">Search</button>
+          </div>
+          <div id="search-out"></div>
+        </div>
+        <div class="tool">
+          <h2>Text classifier</h2>
+          <p class="muted">Zero-shot classification: the model picks the best label without training.</p>
+          <textarea id="cls-text" rows="3" placeholder="Paste a text to classify"></textarea>
+          <div class="row">
+            <input id="cls-labels" value="positive, negative, neutral" aria-label="Labels, comma separated">
+            <button id="btn-classify" class="primary">Classify</button>
+          </div>
+          <p id="cls-out" class="result"></p>
+        </div>
+        <p id="tools-msg" class="msg" role="alert"></p>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
